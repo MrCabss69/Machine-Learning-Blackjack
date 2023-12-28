@@ -14,7 +14,7 @@ def codificar_mano(mano):
 
 def codificar_estado(estado):
     # Codifica las manos de todos los jugadores y del crupier utilizando el objeto Estado
-    return [codificar_mano(estado.cartas_jugador), codificar_mano(estado.cartas_crupier) ]
+    return [ codificar_mano(estado.cartas_jugador), codificar_mano(estado.cartas_crupier) ]
 
 
 class DummyNetwork:
@@ -31,31 +31,19 @@ class SimulacionMontecarlo:
         self.resultados = []
 
     def simular(self):
-        for _ in range(self.n_simulaciones):
+        for i in range(self.n_simulaciones):
+            print(f"Simulación {i+1} de {self.n_simulaciones}")
             juego = Juego(DummyNetwork())
-            self.simular_juego(juego)
-
-    def simular_juego(self, juego, es_intermedio=False):
-        if juego.estado.is_terminal() or es_intermedio:
+            juego.init_hand()
+            juego.jugar_mano()
+            resultado = juego.jugador.resultado
+            print(resultado,'\n')
             self.guardar_resultado(juego)
-            return
-
-        acciones = juego.estado.get_available_actions()
-        for accion in acciones:
-            juego_copia = copy.deepcopy(juego)
-            juego_copia.ejecutar_accion(accion)
-            for _ in range(self.n_simulaciones_intermedias):
-                self.simular_juego(juego_copia, es_intermedio=True)
 
     def guardar_resultado(self, juego):
-        for jugador in [juego.jugador, juego.crupier]:
-            estado_juego = codificar_estado(juego.estado)
-            accion = [1,0] if jugador.ultima_accion == 'HIT' else [0,1]
-            if jugador.resultado == 'Gana':
-                res = 1
-            elif jugador.resultado == 'Pierde':
-                res = -1 
-            else:
-                res = 0
-            self.resultados.append([estado_juego, accion, res])
-
+        jugador = juego.jugador
+        estado_juego = codificar_estado(juego.estado)
+        accion = [1,0] if jugador.ultima_accion == 'HIT' else [0,1]
+        res = 1 if jugador.resultado == 'Gana' else -1 if jugador.resultado == 'Pierde' else 0
+        print(f"Guardando resultado: {estado_juego}, Accion: {accion}, Resultado: {res}")
+        self.resultados.append([estado_juego, accion, res])

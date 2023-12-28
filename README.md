@@ -6,20 +6,20 @@ En este proyecto se explora la resolución del juego de Blackjack utilizando una
 
 ## Estructura del Proyecto
 
-La estructura del proyecto se organiza en módulos dedicados a aspectos específicos como la lógica del juego, la red neuronal y los algoritmos genético:
+La estructura del proyecto se organiza en módulos dedicados a aspectos específicos como la lógica del juego y los algoritmos de aprendizaje automático.
 
 ```bash
-BlackJack - Genetic Algorithms
-
-├── auxiliar.py
+BlackJack - Genetic Algorithms]$ tree
+.
 ├── core
 │   ├── agenetico.py
-│   ├── cromosoma.py
 │   ├── __init__.py
-│   ├── networks.py
+│   ├── montecarlo.py
+│   └── networks.py
+├── example.ipynb
 ├── juego
 │   ├── __init__.py
-│   ├── juego.py
+│   └── juego.py
 ├── main.py
 ├── README.md
 └── tests
@@ -32,6 +32,7 @@ BlackJack - Genetic Algorithms
 
 
 ## Aspectos técnicos
+
 ### Algoritmos Genéticos y Redes Neuronales
 
 Se explora la sinergia entre algoritmos genéticos y diferentes arquitecturas de redes neuronales para optimizar estrategias en Blackjack. Los algoritmos genéticos ayudan a afinar los parámetros de la red, mejorando la capacidad de decisión basada en patrones complejos del juego.

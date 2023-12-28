@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-
-
 def funcion_aptitud(estrategia, juegos=100): 
     # Evalúa la aptitud de una estrategia jugando un número de juegos.
     return sum(1 if juego.jugar_mano().jugadores[0].resultado == "Gana" else -1
@@ -36,16 +34,12 @@ def evolucionar(poblacion_inicial, num_generaciones=100):
     return poblacion, registro
 
 
-
-
 class Cromosoma:
     
     def __init__(self):
         self.umbral_hit = 17
         self.umbral_doblar = 10
         self.umbral_dividir = 8
-        
-        
         
         
 class RegistroEvolucion:

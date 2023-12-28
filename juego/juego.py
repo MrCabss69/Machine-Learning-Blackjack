@@ -1,16 +1,11 @@
 import random
 
 def valor_mano(mano):
-    valor = sum(
-        11 if c == 'A' else 10 if c in 'TJQK' else int(c) 
-        for c, _ in mano 
-    )
-    ases = sum(1 for c, _ in mano if c == 'A')
-
+    valor = sum(11 if c == 'A' else 10 if c in 'TJQK' else int(c)  for c, _ in mano)
+    ases  = sum(1 for c, _ in mano if c == 'A')
     while valor > 21 and ases:
         valor -= 10
         ases -= 1
-
     return valor
 
 
@@ -22,6 +17,7 @@ class Jugador:
 
     def actualizar_mano(self, carta):
         self.mano.append(carta)
+        print(f"Mano actualizada: {self.mostrar_mano()}")
 
     def mostrar_mano(self):
         return ", ".join(f"{valor} de {palo}" for valor, palo in self.mano)
@@ -35,10 +31,12 @@ class Estado:
         self.turno = turno
         self.cartas_jugador, self.cartas_crupier = self.jugador.mano, crupier.mano
         self.apuestas = self.jugador.apuesta
-        
+            
 
     def is_terminal(self):
-        return valor_mano(self.cartas_jugador) >= 21 or valor_mano(self.cartas_crupier) >= 17
+        condicion = (self.jugador.ultima_accion == 'STAND' and valor_mano(self.cartas_crupier) >= 17) or valor_mano(self.cartas_jugador) >= 21  or valor_mano(self.cartas_crupier) > 21
+        print(f"Estado terminal: {condicion}")
+        return condicion
     
     def determinar_ganador(self):
         valor_crupier = valor_mano(self.cartas_crupier)
@@ -54,7 +52,6 @@ class Estado:
             acciones.append('HIT')
         acciones.append('STAND')
         return acciones
-
     
     
 class Juego:
@@ -73,10 +70,11 @@ class Juego:
         return baraja
 
     def init_hand(self):
-        for j in  [self.jugador, self.crupier]:
+        for j in [self.jugador, self.crupier]:
             j.actualizar_mano(self.baraja.pop())
             j.actualizar_mano(self.baraja.pop())
         self.actualiza_estado()
+        print(f"Manos iniciales - Jugador: {self.jugador.mostrar_mano()}, Crupier: {self.crupier.mostrar_mano()}")
 
     def juega_jugador(self):
         while valor_mano(self.jugador.mano) < 21:
@@ -89,17 +87,17 @@ class Juego:
     def juega_crupier(self):
         while valor_mano(self.crupier.mano) < 17:
             self.crupier.actualizar_mano(self.baraja.pop())
+            if self.estado.is_terminal():
+                break
         self.actualiza_estado()
 
     def jugar_mano(self):
         self.init_hand()
-        self.juega_jugador()  # El jugador juega primero
-
-        # Si el turno sigue siendo del jugador, significa que se plantó y ahora es el turno del crupier
+        self.juega_jugador()
         if self.turno == 0:
             self.juega_crupier()
-
-        self.determinar_ganador()  # Determinar el ganador al final del juego
+        self.determinar_ganador()
+        print(f"Resultado del juego - Jugador: {self.jugador.resultado}")
 
 
     def actualiza_estado(self):
@@ -110,16 +108,15 @@ class Juego:
 
     def ejecutar_accion(self, accion):
         jugador_actual = self.jugador if self.turno == 0 else self.crupier
+        print(f"Accion {accion} por {'Jugador' if self.turno == 0 else 'Crupier'}")
         if accion == 'HIT':
             jugador_actual.actualizar_mano(self.baraja.pop())
             self.actualiza_estado()
+            print(f"Mano actual: {jugador_actual.mostrar_mano()}")
             if valor_mano(jugador_actual.mano) >= 21:
                 self.cambia_turno()
         elif accion == 'STAND':
             self.cambia_turno()
 
     def cambia_turno(self):
-        if self.turno == 0:
-            self.turno = None
-        else:
-            self.turno = 0  
+        self.turno = 1 if self.turno == 0 else 0
