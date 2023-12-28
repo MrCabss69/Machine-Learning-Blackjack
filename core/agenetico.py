@@ -3,6 +3,7 @@ from juego import Juego
 import matplotlib.pyplot as plt 
 import seaborn as sns
 
+
 def funcion_aptitud(estrategia, juegos=100): 
     # Evalúa la aptitud de una estrategia jugando un número de juegos.
     return sum(1 if juego.jugar_mano().jugadores[0].resultado == "Gana" else -1
@@ -26,12 +27,24 @@ def evolucionar(poblacion_inicial, num_generaciones=100):
     registro = RegistroEvolucion()
     poblacion = poblacion_inicial
     for _ in range(num_generaciones):
-        aptitudes = []# funcion_aptitud(Estrategia(cromosoma)) for cromosoma in poblacion]
+        aptitudes = [] # funcion_aptitud(Estrategia(cromosoma)) for cromosoma in poblacion]
         registro.registrar_generacion(aptitudes)
         nueva_poblacion = [mutacion(cruce(*seleccion_torneo(poblacion, aptitudes))) for _ in range(len(poblacion))]
         poblacion = nueva_poblacion
     return poblacion, registro
 
+
+
+class Cromosoma:
+    
+    def __init__(self):
+        self.umbral_hit = 17
+        self.umbral_doblar = 10
+        self.umbral_dividir = 8
+        
+        
+        
+        
 class RegistroEvolucion:
     def __init__(self):
         self.historial_aptitudes = []
@@ -42,6 +55,9 @@ class RegistroEvolucion:
         self.historial_aptitudes.append(aptitudes)
         self.mejor_aptitud_por_generacion.append(max(aptitudes))
         self.promedio_aptitud_por_generacion.append(sum(aptitudes) / len(aptitudes))
+        
+        
+        
         
 class VisualizadorEvolucion:
     def __init__(self, registro_evolucion):
