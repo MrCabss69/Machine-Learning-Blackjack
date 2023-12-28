@@ -29,21 +29,33 @@ class DummyNetwork:
 
 
 class SimulacionMontecarlo:
-    def __init__(self, n_barajas, n_simulaciones):
+    def __init__(self, n_barajas, n_simulaciones, n_simulaciones_intermedias):
         self.n_barajas = n_barajas
         self.n_simulaciones = n_simulaciones
+        self.n_simulaciones_intermedias = n_simulaciones_intermedias
         self.resultados = []
 
     def simular(self):
         for _ in range(self.n_simulaciones):
             juego = Juego(DummyNetwork())
-            juego.jugar_mano()
+            self.simular_juego(juego)
+
+    def simular_juego(self, juego, es_intermedio=False):
+        if juego.estado.is_terminal() or es_intermedio:
             self.guardar_resultado(juego)
+            return
+
+        acciones = juego.estado.get_available_actions()
+        for accion in acciones:
+            juego_copia = copy.deepcopy(juego)
+            juego_copia.ejecutar_accion(accion)
+            for _ in range(self.n_simulaciones_intermedias):
+                self.simular_juego(juego_copia, es_intermedio=True)
 
     def guardar_resultado(self, juego):
         for jugador in juego.jugadores:
             estado_juego = codificar_estado(juego.estado)
-            accion = [1,0] if jugador.ultima_accion == 'HIT' else [0,1] # Asumiendo que se registra la última acción en Jugador
+            accion = [1,0] if jugador.ultima_accion == 'HIT' else [0,1]
             if jugador.resultado == 'Gana':
                 res = 1
             elif jugador.resultado == 'Pierde':
@@ -51,3 +63,4 @@ class SimulacionMontecarlo:
             else:
                 res = 0
             self.resultados.append([estado_juego, accion, res])
+
