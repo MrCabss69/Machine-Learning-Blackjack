@@ -26,46 +26,34 @@ class Juego:
         print(f"Manos iniciales - Jugador: {self.jugador.mostrar_mano()}, Crupier: {self.crupier.mostrar_mano()}")
 
     def juega_jugador(self):
-        while valor_mano(self.jugador.mano) < 21:
+        valor, is_soft = valor_mano(self.jugador.mano)
+        while valor < 21:
             accion = self.network.get_action(self.estado)
             self.jugador.ultima_accion = accion
-            self.ejecutar_accion(accion)
-            if accion == 'STAND':
+            if accion == 'HIT':
+                self.jugador.actualizar_mano(self.baraja.pop())
+                valor, is_soft = valor_mano(self.jugador.mano)
+                self.actualiza_estado()
+            elif accion == 'STAND':
+                self.turno = 1
                 break
+        print(f"Mano final del jugador: {self.jugador.mostrar_mano()}")
+        self.actualiza_estado()
 
     def juega_crupier(self):
-        while valor_mano(self.crupier.mano) < 17:
+        valor, is_soft = valor_mano(self.crupier.mano)
+        while valor < 17 or (is_soft and valor == 17):
             self.crupier.actualizar_mano(self.baraja.pop())
-            if self.estado.is_terminal():
-                break
-        self.actualiza_estado()
+            valor, is_soft = valor_mano(self.crupier.mano)
+            self.actualiza_estado()
+        print(f"Mano final del crupier: {self.crupier.mostrar_mano()}")
 
     def jugar_mano(self):
         self.init_hand()
         self.juega_jugador()
-        if self.turno == 0:
+        if self.turno == 1 and not self.estado.is_terminal():
             self.juega_crupier()
-        self.determinar_ganador()
-        print(f"Resultado del juego - Jugador: {self.jugador.resultado}")
-
+        self.estado.determinar_ganador()
 
     def actualiza_estado(self):
         self.estado = Estado(self.jugador, self.crupier, self.turno)
-
-    def determinar_ganador(self):
-        self.estado.determinar_ganador()
-
-    def ejecutar_accion(self, accion):
-        jugador_actual = self.jugador if self.turno == 0 else self.crupier
-        print(f"Accion {accion} por {'Jugador' if self.turno == 0 else 'Crupier'}")
-        if accion == 'HIT':
-            jugador_actual.actualizar_mano(self.baraja.pop())
-            self.actualiza_estado()
-            print(f"Mano actual: {jugador_actual.mostrar_mano()}")
-            if valor_mano(jugador_actual.mano) >= 21:
-                self.cambia_turno()
-        elif accion == 'STAND':
-            self.cambia_turno()
-
-    def cambia_turno(self):
-        self.turno = 1 if self.turno == 0 else 0
