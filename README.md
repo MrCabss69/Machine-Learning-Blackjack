@@ -9,7 +9,7 @@ En este proyecto se explora la resolución del juego de Blackjack utilizando una
 La estructura del proyecto se organiza en módulos dedicados a aspectos específicos como la lógica del juego y los algoritmos de aprendizaje automático.
 
 ```bash
-BlackJack - Genetic Algorithms]$ tree
+BlackJack - Genetic Algorithms
 .
 ├── core
 │   ├── agenetico.py
@@ -20,7 +20,6 @@ BlackJack - Genetic Algorithms]$ tree
 ├── juego
 │   ├── __init__.py
 │   └── juego.py
-├── main.py
 ├── README.md
 └── tests
     ├── auto_exec.sh
