@@ -1,8 +1,8 @@
 import random
 import json 
 import pandas as pd
-from juego import Juego 
-
+from juego import Juego
+from tqdm import tqdm
 
 def codificar_mano(mano):
     codificacion_cartas = {'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12}
@@ -17,7 +17,6 @@ class DummyNetwork:
         actions = estado.get_available_actions()
         return random.choice(actions)
 
-
 class SimulacionMontecarlo:
     
     def __init__(self, n_barajas, n_simulaciones):
@@ -26,12 +25,9 @@ class SimulacionMontecarlo:
         self.resultados = []
 
     def simular(self):
-        for i in range(self.n_simulaciones):
-            print(f"Simulación {i+1} de {self.n_simulaciones}")
+        for _ in tqdm(range(self.n_simulaciones)):
             juego = Juego(DummyNetwork())
             juego.jugar_mano()
-            resultado = juego.jugador.resultado
-            # print(resultado)
             self.guardar_resultado(juego)
         self.guardar_en_csv()
 

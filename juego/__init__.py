@@ -23,7 +23,7 @@ class Juego:
             j.actualizar_mano(self.baraja.pop())
             j.actualizar_mano(self.baraja.pop())
         self.actualiza_estado()
-        print(f"Manos iniciales - Jugador: {self.jugador.mostrar_mano()}, Crupier: {self.crupier.mostrar_mano()}")
+        # print(f"Manos iniciales - Jugador: {self.jugador.mostrar_mano()}, Crupier: {self.crupier.mostrar_mano()}")
 
     def juega_jugador(self):
         valor, is_soft = valor_mano(self.jugador.mano)
@@ -37,7 +37,7 @@ class Juego:
             elif accion == 'STAND':
                 self.turno = 1
                 break
-        print(f"Mano final del jugador: {self.jugador.mostrar_mano()}")
+        # print(f"Mano final del jugador: {self.jugador.mostrar_mano()}")
         self.actualiza_estado()
 
     def juega_crupier(self):
@@ -46,7 +46,7 @@ class Juego:
             self.crupier.actualizar_mano(self.baraja.pop())
             valor, is_soft = valor_mano(self.crupier.mano)
             self.actualiza_estado()
-        print(f"Mano final del crupier: {self.crupier.mostrar_mano()}")
+        # print(f"Mano final del crupier: {self.crupier.mostrar_mano()}")
 
     def jugar_mano(self):
         self.init_hand()
