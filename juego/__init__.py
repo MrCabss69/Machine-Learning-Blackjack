@@ -1,6 +1,6 @@
 import random 
-from .jugador import Jugador
-from .estado import Estado, valor_mano
+from .jugador import *
+from .estado import  * 
 
 
 class Juego:
