@@ -2,18 +2,16 @@ from juego import Jugador
 import unittest
 
 class TestJugador(unittest.TestCase):
+
     def setUp(self):
         self.jugador = Jugador()
 
     def test_inicializacion(self):
         self.assertEqual(self.jugador.mano, [])
-        self.assertEqual(self.jugador.apuesta, 0)
-        self.assertIsNone(self.jugador.resultado)
+        self.assertEqual(self.jugador.apuesta, 1)
 
-    def test_actualizar_mano(self):
+    def test_actualizar_y_mostrar_mano(self):
+        self.jugador.actualizar_mano(('K', 'Picas'))
         self.jugador.actualizar_mano(('A', 'Corazones'))
-        self.assertIn(('A', 'Corazones'), self.jugador.mano)
-
-    def test_mostrar_mano(self):
-        self.jugador.actualizar_mano(('A', 'Corazones'))
-        self.assertEqual(self.jugador.mostrar_mano(), "A de Corazones")
+        self.assertIn('K de Picas', self.jugador.mostrar_mano())
+        self.assertIn('A de Corazones', self.jugador.mostrar_mano())

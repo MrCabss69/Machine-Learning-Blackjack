@@ -29,26 +29,25 @@ class Jugador:
 
 class Estado:
     
-    def __init__(self, jugadores, crupier, turno):
-        self.jugadores = jugadores
+    def __init__(self, jugador, crupier, turno):
+        self.jugador = jugador
         self.crupier = crupier 
         self.turno = turno
-        self.cartas_jugadores, self.cartas_crupier = {j: j.mano for j in jugadores}, crupier.mano
-        self.apuestas = {j: j.apuesta for j in jugadores}
+        self.cartas_jugador, self.cartas_crupier = self.jugador.mano, crupier.mano
+        self.apuestas = self.jugador.apuesta
         
 
     def is_terminal(self):
-        return all(valor_mano(j.mano) >= 21 for j in self.cartas_jugadores) or valor_mano(self.cartas_crupier) >= 17
+        return valor_mano(self.cartas_jugador) >= 21 or valor_mano(self.cartas_crupier) >= 17
     
     def determinar_ganador(self):
         valor_crupier = valor_mano(self.cartas_crupier)
-        for j in self.cartas_jugadores:
-            valor_jugador = valor_mano(j.mano)
-            j.resultado = "Pierde" if valor_jugador > 21 or (valor_crupier <= 21 and valor_jugador < valor_crupier) else "Gana" if valor_crupier > 21 or valor_jugador > valor_crupier else "Empata"
+        valor_jugador = valor_mano(self.cartas_jugador)
+        self.jugador.resultado = "Pierde" if valor_jugador > 21 or (valor_crupier <= 21 and valor_jugador < valor_crupier) else "Gana" if valor_crupier > 21 or valor_jugador > valor_crupier else "Empata"
     
     def get_available_actions(self):
         acciones = []
-        cartas = list(self.cartas_jugadores.values())[0] if self.turno == 0 else self.cartas_crupier
+        cartas = self.cartas_jugador if self.turno == 0 else self.cartas_crupier
         valor_mano_jugador = valor_mano(cartas)
 
         if valor_mano_jugador < 21:
@@ -62,7 +61,7 @@ class Juego:
     
     def __init__(self, network, n_barajas=1):
         self.baraja = self.crear_baraja(n_barajas)
-        self.jugadores = [Jugador()]
+        self.jugador = Jugador()
         self.crupier = Jugador()
         self.network = network
         self.turno = 0
@@ -74,16 +73,15 @@ class Juego:
         return baraja
 
     def init_hand(self):
-        for j in self.jugadores + [self.crupier]:
+        for j in  [self.jugador, self.crupier]:
             j.actualizar_mano(self.baraja.pop())
             j.actualizar_mano(self.baraja.pop())
         self.actualiza_estado()
 
     def juega_jugador(self):
-        jugador_actual = self.jugadores[self.turno]
-        while valor_mano(jugador_actual.mano) < 21:
+        while valor_mano(self.jugador.mano) < 21:
             accion = self.network.get_action(self.estado)
-            jugador_actual.ultima_accion = accion
+            self.jugador.ultima_accion = accion
             self.ejecutar_accion(accion)
             if accion == 'STAND':
                 break
@@ -95,20 +93,23 @@ class Juego:
 
     def jugar_mano(self):
         self.init_hand()
-        while self.turno is not None:
-            self.juega_jugador()
-            self.turno += 1
-        self.juega_crupier()
-        self.determinar_ganador()
+        self.juega_jugador()  # El jugador juega primero
+
+        # Si el turno sigue siendo del jugador, significa que se plantó y ahora es el turno del crupier
+        if self.turno == 0:
+            self.juega_crupier()
+
+        self.determinar_ganador()  # Determinar el ganador al final del juego
+
 
     def actualiza_estado(self):
-        self.estado = Estado(self.jugadores, self.crupier, self.turno)
+        self.estado = Estado(self.jugador, self.crupier, self.turno)
 
     def determinar_ganador(self):
         self.estado.determinar_ganador()
 
     def ejecutar_accion(self, accion):
-        jugador_actual = self.jugadores[self.turno] if self.turno < len(self.jugadores) else self.crupier
+        jugador_actual = self.jugador if self.turno == 0 else self.crupier
         if accion == 'HIT':
             jugador_actual.actualizar_mano(self.baraja.pop())
             self.actualiza_estado()
@@ -118,7 +119,7 @@ class Juego:
             self.cambia_turno()
 
     def cambia_turno(self):
-        if self.turno < len(self.jugadores) - 1:
-            self.turno += 1
-        else:
+        if self.turno == 0:
             self.turno = None
+        else:
+            self.turno = 0  

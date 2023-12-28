@@ -14,12 +14,7 @@ def codificar_mano(mano):
 
 def codificar_estado(estado):
     # Codifica las manos de todos los jugadores y del crupier utilizando el objeto Estado
-    estado_codificado = []
-    for jugador in estado.cartas_jugadores.values():
-        estado_codificado.append(codificar_mano(jugador))
-    estado_codificado.append(codificar_mano(estado.cartas_crupier))
-    return estado_codificado
-
+    return [codificar_mano(estado.cartas_jugador), codificar_mano(estado.cartas_crupier) ]
 
 
 class DummyNetwork:
@@ -53,7 +48,7 @@ class SimulacionMontecarlo:
                 self.simular_juego(juego_copia, es_intermedio=True)
 
     def guardar_resultado(self, juego):
-        for jugador in juego.jugadores:
+        for jugador in [juego.jugador, juego.crupier]:
             estado_juego = codificar_estado(juego.estado)
             accion = [1,0] if jugador.ultima_accion == 'HIT' else [0,1]
             if jugador.resultado == 'Gana':
