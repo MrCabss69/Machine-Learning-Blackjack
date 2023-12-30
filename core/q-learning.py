@@ -27,7 +27,8 @@ class QLearningAgent:
         if estado not in self.q_table:
             self.q_table[estado] = {'HIT': 0, 'STAND': 0}
 
-# Ejemplo de cómo se utilizaría QLearningAgent en un juego de Blackjack
+# EXAMPLE
+
 def jugar_blackjack(episodios, agente):
     resultados = []
     for episodio in range(episodios):
@@ -42,8 +43,5 @@ def jugar_blackjack(episodios, agente):
     
     return resultados
 
-# Crear un agente Q-Learning
 agente = QLearningAgent(alpha=0.1, gamma=0.9, epsilon=0.1)
-
-# Jugar Blackjack
 resultados = jugar_blackjack(1000, agente)

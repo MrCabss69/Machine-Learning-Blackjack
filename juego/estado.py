@@ -1,5 +1,4 @@
 def valor_mano(mano):
-    
     valor, ases, soft_ = 0, 0, False
     for carta, _ in mano:
         if carta == 'A':
@@ -7,14 +6,11 @@ def valor_mano(mano):
             ases += 1
         else:
             valor += 10 if carta in 'TJQK' else int(carta)
-
     if ases and valor <= 21:
         soft_ = True
-
     while valor > 21 and ases:
         valor -= 10
         ases -= 1
-
     return valor, soft_
 
 
