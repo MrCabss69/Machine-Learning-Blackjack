@@ -46,6 +46,18 @@ JUEGO
 - juego/estado:    clase para definir un estado del juego
 - juego/jugador:   clase para definir un juegador
 
+
+
+
+## Resultados
+
+#### DummyAgent vs NeuralNetworkAgent 1000 
+![Results DummyAgent vs NeuralNetworkAgent](resources/images/image.png)
+
+#### DummyAgent vs NeuralNetworkAgent 10000
+![Results DummyAgent vs NeuralNetworkAgent](resources/images/image2.png)
+
+
 ## Aspectos Teóricos
 
 ### Simulaciones de Montecarlo
@@ -66,13 +78,3 @@ La combinación de algoritmos genéticos con redes neuronales se explora para op
 ### Aprendizaje por Refuerzo
 
 El aprendizaje por refuerzo se utiliza para evaluar estrategias y tomar decisiones informadas en el juego. Esta técnica facilita una comprensión más profunda de las consecuencias a largo plazo de las acciones en juegos que incluyen elementos de azar, como el Blackjack.
-
-
-
-## Resultados provisionales
-
-### DummyAgent vs NeuralNetworkAgent 1000 
-![Results DummyAgent vs NeuralNetworkAgent](image-3.png)
-
-### DummyAgent vs NeuralNetworkAgent 10000
-![Results DummyAgent vs NeuralNetworkAgent](image-4.png)
