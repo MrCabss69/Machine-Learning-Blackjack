@@ -79,6 +79,6 @@ La combinación de algoritmos genéticos con redes neuronales se explora para op
 
 El aprendizaje por refuerzo se utiliza para evaluar estrategias y tomar decisiones informadas en el juego. Esta técnica facilita una comprensión más profunda de las consecuencias a largo plazo de las acciones en juegos que incluyen elementos de azar, como el Blackjack.
 
-## Resources 
+## Recursos 
 
 https://es.scribd.com/doc/92066804/Beat-the-Dealer-Edward-O-Thorp
