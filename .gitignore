@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+# CSVs
+*.csv
+
+>>>>>>> 5e42a24 (Guardando mis cambios en una nueva rama)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

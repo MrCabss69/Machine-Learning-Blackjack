@@ -6,12 +6,13 @@ from .estado import  *
 class Juego:
     
     def __init__(self, network, n_barajas=1):
-        self.baraja = self.crear_baraja(n_barajas)
-        self.jugador = Jugador()
-        self.crupier = Jugador()
-        self.network = network
-        self.turno = 0
-        self.actualiza_estado()
+        self.baraja    = self.crear_baraja(n_barajas)
+        self.jugador   = Jugador()
+        self.crupier   = Jugador()
+        self.network   = network
+        self.turno     = 0
+        self.historial = []
+        self.actualiza_estado(False)
 
     def crear_baraja(self, n_barajas):
         baraja = [(v, p) for v in '23456789TJQKA' for p in ['Corazones', 'Diamantes', 'Picas', 'Tréboles']] * n_barajas
@@ -23,7 +24,6 @@ class Juego:
             j.actualizar_mano(self.baraja.pop())
             j.actualizar_mano(self.baraja.pop())
         self.actualiza_estado()
-        # print(f"Manos iniciales - Jugador: {self.jugador.mostrar_mano()}, Crupier: {self.crupier.mostrar_mano()}")
 
     def juega_jugador(self):
         valor, is_soft = valor_mano(self.jugador.mano)
@@ -37,7 +37,6 @@ class Juego:
             elif accion == 'STAND':
                 self.turno = 1
                 break
-        # print(f"Mano final del jugador: {self.jugador.mostrar_mano()}")
         self.actualiza_estado()
 
     def juega_crupier(self):
@@ -46,7 +45,6 @@ class Juego:
             self.crupier.actualizar_mano(self.baraja.pop())
             valor, is_soft = valor_mano(self.crupier.mano)
             self.actualiza_estado()
-        # print(f"Mano final del crupier: {self.crupier.mostrar_mano()}")
 
     def jugar_mano(self):
         self.init_hand()
@@ -55,5 +53,20 @@ class Juego:
             self.juega_crupier()
         self.estado.determinar_ganador()
 
-    def actualiza_estado(self):
+    def actualiza_estado(self,not_init_=True):
         self.estado = Estado(self.jugador, self.crupier, self.turno)
+        if not_init_:
+            estado_actual = codificar_estado(self.jugador.mano, self.crupier.mano)
+            accion = [1, 0] if self.jugador.ultima_accion == 'HIT' else [0, 1]
+            self.historial.append([estado_actual[0], estado_actual[1], accion])
+
+    def guardar_resultados(self):
+        res = 1 if self.jugador.resultado == 'Gana' else -1 if self.jugador.resultado == 'Pierde' else 0
+        return [[e0, e1, accion, res] for e0, e1, accion in self.historial]
+
+def codificar_mano(mano):
+    codificacion_cartas = {'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12}
+    return [sum(card[0] == rank for card in mano) for rank in codificacion_cartas]
+
+def codificar_estado(mano_jugador, mano_crupier):
+    return [codificar_mano(mano_jugador), codificar_mano(mano_crupier)]
