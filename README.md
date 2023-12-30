@@ -37,7 +37,10 @@ Este proyecto presenta una metodología avanzada para abordar la resolución del
 
 CORE
 - core/montecarlo: clase para simular partidas de blackjack y guardar los resultados
-- core/networks:   clase para definir redes neuronales con diversas arquitecturas. **Input - estado actual y acción | Output - vector de 3 posiciones** (probabilidad de cada resultado posible en base a un estado y una acción)
+- core/networks:   clase para definir redes neuronales con diversas arquitecturas. 
+**Input - estado actual y acción | Output - vector de 3 posiciones** (probabilidad de cada resultado posible en base a un estado y una acción)
+
+
 - core/agentes:    clase para definir agentes con estrategias diferentes, y evaluar su resultado.
 - core/q-learning: clase para implementar el algoritmo Q-Learning aplicado al blackjack
 
