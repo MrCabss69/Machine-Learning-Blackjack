@@ -1,24 +1,7 @@
 from tensorflow.keras.models import load_model
 import numpy as np
 import random 
-
-
-def codificar_mano(mano):
-    codificacion_cartas = {'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12}
-    return [sum(card[0] == rank for card in mano) for rank in codificacion_cartas]
-
-def codificar_estado(mano_jugador, mano_crupier):
-    jugador = codificar_mano(mano_jugador)
-    crupier = codificar_mano(mano_crupier)
-    return jugador + crupier
-
-def codificar_accion(accion):
-    if accion == 'HIT':
-        return [1, 0]
-    elif accion == 'STAND':
-        return [0, 1]
-    else:
-        raise ValueError("Acción no reconocida")
+from juego import codificar_estado, codificar_accion
 
 
 
@@ -33,10 +16,10 @@ class DummyAgent:
         return random.choice(actions)
 
 
+
 class NeuralNetworkAgent:
-    def __init__(self, input_size):
-        model_path = 'pretrained/dnn3_5000000.h5'
-        self.model = load_model(model_path)
+    def __init__(self, input_size, model_p = None):
+        self.model = load_model('pretrained/dnn3_5000000.h5' if model_p is not None else model_p)
         self.input_size = input_size
 
     def preprocess_state(self, estado, accion):
