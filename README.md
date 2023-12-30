@@ -3,6 +3,7 @@
 Este proyecto presenta una metodología avanzada para abordar la resolución del Blackjack con diversos enfoques: integración de redes neuronales, aprendizaje por refuerzo y algoritmos genéticos. El proyecto incorpora técnicas de simulaciones de Montecarlo, con el fin de evaluar y optimizar las estrategias del juego.
 
 
+
 ## Implementación 
 
 ```bash 
@@ -53,6 +54,7 @@ JUEGO
 
 
 
+
 ## Resultados
 
 #### DummyAgent vs NeuralNetworkAgent 1000 
@@ -60,6 +62,7 @@ JUEGO
 
 #### DummyAgent vs NeuralNetworkAgent 10000
 ![Results DummyAgent vs NeuralNetworkAgent](resources/images/image2.png)
+
 
 
 ## Aspectos Teóricos
@@ -82,6 +85,8 @@ La combinación de algoritmos genéticos con redes neuronales se explora para op
 ### Aprendizaje por Refuerzo
 
 El aprendizaje por refuerzo se utiliza para evaluar estrategias y tomar decisiones informadas en el juego. Esta técnica facilita una comprensión más profunda de las consecuencias a largo plazo de las acciones en juegos que incluyen elementos de azar, como el Blackjack.
+
+
 
 ## Recursos 
 
