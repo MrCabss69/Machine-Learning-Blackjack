@@ -2,7 +2,6 @@ import random
 from .jugador import *
 from .estado import  * 
 
-
 def codificar_mano(mano):
     codificacion_cartas = {'2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12}
     return [sum(card[0] == rank for card in mano) for rank in codificacion_cartas]
@@ -11,15 +10,6 @@ def codificar_estado(mano_jugador, mano_crupier):
     jugador = codificar_mano(mano_jugador)
     crupier = codificar_mano(mano_crupier)
     return jugador + crupier
-
-def codificar_accion(accion):
-    if accion == 'HIT':
-        return [1, 0]
-    elif accion == 'STAND':
-        return [0, 1]
-    else:
-        raise ValueError("Acción no reconocida")
-
 
 class Juego:
     

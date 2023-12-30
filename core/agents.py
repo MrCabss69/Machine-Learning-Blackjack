@@ -1,8 +1,7 @@
 from tensorflow.keras.models import load_model
 import numpy as np
 import random 
-from juego import codificar_estado, codificar_accion
-
+from juego import codificar_estado
 
 
 class DummyAgent:
@@ -16,7 +15,6 @@ class DummyAgent:
         return random.choice(actions)
 
 
-
 class NeuralNetworkAgent:
     def __init__(self, input_size, model_p = None):
         self.model = load_model('pretrained/dnn3_5000000.h5' if model_p is not None else model_p)
@@ -24,10 +22,8 @@ class NeuralNetworkAgent:
 
     def preprocess_state(self, estado, accion):
         encoded_state = codificar_estado(estado.cartas_jugador, estado.cartas_crupier)
-        encoded_action = codificar_accion(accion)
+        encoded_action = [1,0] if accion == 'HIT' else [0,1]
         encoded_input = encoded_state + encoded_action
-        if len(encoded_input) != self.input_size:
-            raise ValueError(f"El tamaño del estado codificado {len(encoded_input)} no coincide con el tamaño de entrada esperado {self.input_size}.")
         return np.reshape(encoded_input, (1, self.input_size))
     
     def get_action(self, estado):
@@ -44,10 +40,6 @@ class NeuralNetworkAgent:
         ev_STAND = -prediction_STAND[0] + prediction_STAND[2]
         
         # Elegir la acción con mayor EV
-        if ev_HIT > ev_STAND:
-            return 'HIT'
-        elif ev_HIT < ev_STAND:
-            return 'STAND'
-        else:
-            # Si los EV son iguales, elegir al azar
+        if ev_HIT == ev_STAND:
             return random.choice(['HIT', 'STAND'])
+        return 'HIT' if ev_HIT > ev_STAND else 'STAND'

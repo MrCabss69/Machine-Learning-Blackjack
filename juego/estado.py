@@ -29,12 +29,11 @@ class Estado:
         self.apuestas = jugador.apuesta
 
     def is_terminal(self):
-        valor_crupier, is_soft_crupier = valor_mano(self.cartas_crupier)
-        valor_jugador, is_soft_jugador = valor_mano(self.cartas_jugador)
-        # Considerar la mano 'soft' para determinar el estado terminal
-        if self.jugador.ultima_accion == 'STAND' and (valor_crupier >= 17 or is_soft_crupier):
+        valor_crupier, soft_crupier_ = valor_mano(self.cartas_crupier)
+        valor_jugador, _             = valor_mano(self.cartas_jugador)
+        if self.jugador.ultima_accion == 'STAND' and (valor_crupier >= 17 and not soft_crupier_):
             return True
-        return valor_jugador > 21 or valor_crupier > 21
+        return valor_jugador >= 21 or valor_crupier >= 21
     
     def determinar_ganador(self):
         valor_crupier, _ = valor_mano(self.cartas_crupier)

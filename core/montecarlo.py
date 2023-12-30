@@ -33,5 +33,5 @@ class SimulacionMontecarlo:
         columns_ = ['Mano Jugador', 'Mano Crupier', 'Accion', 'Resultado']
         df = pd.DataFrame(self.resultados, columns=columns_)
         df_estadisticas = pd.DataFrame([self.estadisticas])
-        df_total = pd.concat([df, df_estadisticas], axis=1)
-        df_total.to_csv(f'mc_{self.n_simulaciones}.csv', index=False)
+        df.to_csv(f'mc_{self.n_simulaciones}.csv', index=False)
+        df_estadisticas.to_csv(f'stats_mc_{self.n_simulaciones}.csv')
