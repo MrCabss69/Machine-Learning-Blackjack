@@ -1,7 +1,7 @@
 import pandas as pd
 from juego import Juego
 from tqdm import tqdm
-from .agents import DummyAgent
+from .agentes import DummyAgent
 
 class SimulacionMontecarlo:
     

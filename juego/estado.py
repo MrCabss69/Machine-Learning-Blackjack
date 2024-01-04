@@ -35,16 +35,18 @@ class Estado:
         valor_crupier, _ = valor_mano(self.cartas_crupier)
         valor_jugador, _ = valor_mano(self.cartas_jugador)
         if valor_jugador > 21 or (valor_crupier <= 21 and valor_jugador < valor_crupier):
-            self.jugador.resultado = "Pierde"
+            self.jugador.resultado = -1
         elif valor_crupier > 21 or valor_jugador > valor_crupier:
-            self.jugador.resultado = "Gana"
+            self.jugador.resultado = 1
         else:
-            self.jugador.resultado = "Empata"
+            self.jugador.resultado = 0
     
     def get_available_actions(self):
-        cartas = self.cartas_jugador if self.turno == 0 else self.cartas_crupier
+        activo = self.jugador if self.turno == 0 else self.crupier
+        cartas = activo.mano
         valor_actual_mano, is_soft_hand = valor_mano(cartas)
-
+        if activo.ultima_accion == 'STAND':
+            return []
         acciones = ['STAND']
         if valor_actual_mano < 21 or (is_soft_hand and valor_actual_mano <= 21):
             acciones.insert(0, 'HIT')

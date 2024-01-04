@@ -61,7 +61,7 @@ class Juego:
             self.juega_crupier()
         self.estado.determinar_ganador()
 
-    def actualiza_estado(self,not_init_=True):
+    def actualiza_estado(self, not_init_=True):
         self.estado = Estado(self.jugador, self.crupier, self.turno)
         if not_init_:
             estado_actual = codificar_estado(self.jugador.mano, self.crupier.mano)

@@ -3,7 +3,6 @@
 Este proyecto presenta una metodología avanzada para abordar la resolución del Blackjack con diversos enfoques: integración de redes neuronales, aprendizaje por refuerzo y algoritmos genéticos. El proyecto incorpora técnicas de simulaciones de Montecarlo, con el fin de evaluar y optimizar las estrategias del juego.
 
 
-
 ## Implementación 
 
 ```bash 
@@ -50,8 +49,6 @@ JUEGO
 - juego/__init_:   clase Juego, define el blackjack, sus reglas, y el flujo de ejecución
 - juego/estado:    clase para definir un estado del juego
 - juego/jugador:   clase para definir un juegador
-
-
 
 
 
