@@ -18,18 +18,21 @@ class Crupier(Agente):
             return 'HIT'
         return 'STAND'
 
-class DummyAgent(Agente):
+class DummyAgent():
     def __init__(self):
         pass
 
     def get_action(self, estado):
         actions = estado.get_available_actions()
-        return random.choice(actions)
+        if actions:
+            return random.choice(actions)
+        return None
 
 
-class NeuralNetworkAgent(Agente):
-    def __init__(self, input_size, model_p = None):
-        self.model = load_model('pretrained/dnn3_5000000.h5' if model_p is not None else model_p)
+class NeuralNetworkAgent():
+    def __init__(self, input_size):
+        path = '/home/jd/Documentos/CODIGO/Machine-Learning-Blackajack-v2/resources/pretrained/dnn3_5000000.h5'
+        self.model = load_model(path)
         self.input_size = input_size
 
     def preprocess_state(self, estado, accion):
@@ -39,6 +42,8 @@ class NeuralNetworkAgent(Agente):
         return np.reshape(encoded_input, (1, self.input_size))
     
     def get_action(self, estado):
+        if estado.get_available_actions() == []:
+            return None
         # Procesar estados para HIT y STAND una vez
         hit_state  = self.preprocess_state(estado, 'HIT')
         stay_state = self.preprocess_state(estado, 'STAND')
@@ -56,28 +61,25 @@ class NeuralNetworkAgent(Agente):
             return random.choice(['HIT', 'STAND'])
         return 'HIT' if ev_HIT > ev_STAND else 'STAND'
     
+
     
-class QLearningAgent(Agente):
+class QLearningAgent():
     
     def __init__(self, alpha: float = 0.1, gamma: float = 0.9, epsilon: float = 0.1):
-        self.alpha = alpha
-        self.gamma = gamma
+        self.alpha   = alpha
+        self.gamma   = gamma
         self.epsilon = epsilon
         self.q_table = defaultdict(lambda: {'HIT': 0, 'STAND': 0}) 
 
-    def get_action(self, estado: str) -> str:
-        """
-        Elige una acción basada en una política epsilon-greedy.
-        """
+    def get_action(self, estado_codificado):
         if random.random() < self.epsilon:
-            return random.choice(['HIT', 'STAND'])
-        return max(self.q_table[estado], key=self.q_table[estado].get)
+            return random.choice(['HIT', 'STAND']) 
+        return max(self.q_table[estado_codificado], key=self.q_table[estado_codificado].get)
 
-    def update_q_table(self, estado: str, accion: str, recompensa: float, nuevo_estado: str):
-        """
-        Actualiza la Q-table usando la fórmula de Q-learning.
-        """
-        max_future_q = max(self.q_table[nuevo_estado].values())
+    def update_q_table(self, estado, accion, recompensa, nuevo_estado):
+        estado = tuple(estado)
+        nuevo_estado = tuple(nuevo_estado)
+        max_future_q = max(self.q_table[nuevo_estado].values(), default=0)
         current_q = self.q_table[estado][accion]
         new_q = (1 - self.alpha) * current_q + self.alpha * (recompensa + self.gamma * max_future_q)
         self.q_table[estado][accion] = new_q
