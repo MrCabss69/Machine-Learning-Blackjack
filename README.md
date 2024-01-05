@@ -3,6 +3,14 @@
 Este proyecto presenta una metodología avanzada para abordar la resolución del Blackjack con diversos enfoques: integración de redes neuronales, aprendizaje por refuerzo y algoritmos genéticos. El proyecto incorpora técnicas de simulaciones de Montecarlo, con el fin de evaluar y optimizar las estrategias del juego.
 
 
+## Resultados del modelo base
+
+#### DummyAgent vs NeuralNetworkAgent 1000 
+![Results DummyAgent vs NeuralNetworkAgent](resources/images/image.png)
+
+#### DummyAgent vs NeuralNetworkAgent 10000
+![Results DummyAgent vs NeuralNetworkAgent](resources/images/image2.png)
+
 ## Implementación 
 
 ```bash 
@@ -51,14 +59,6 @@ JUEGO
 - juego/jugador:   clase para definir un juegador
 
 
-
-## Resultados
-
-#### DummyAgent vs NeuralNetworkAgent 1000 
-![Results DummyAgent vs NeuralNetworkAgent](resources/images/image.png)
-
-#### DummyAgent vs NeuralNetworkAgent 10000
-![Results DummyAgent vs NeuralNetworkAgent](resources/images/image2.png)
 
 
 
