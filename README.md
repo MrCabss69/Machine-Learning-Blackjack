@@ -1,6 +1,6 @@
 # Redes Neurales, Reinforce Learning y Algoritmos Genéticos para el Blackjack
 
-Este proyecto presenta una metodología avanzada para abordar la resolución del Blackjack con diversos enfoques: integración de redes neuronales, aprendizaje por refuerzo y algoritmos genéticos. El proyecto incorpora técnicas de simulaciones de Montecarlo, con el fin de evaluar y optimizar las estrategias del juego.
+Este proyecto presenta una metodología avanzada para abordar la resolución del Blackjack con diversos enfoques: integración de redes neuronales, aprendizaje por refuerzo y algoritmos genéticos. El proyecto incorpora simulaciones de Montecarlo con el fin de evaluar y optimizar las estrategias del juego.
 
 
 ## Resultados del modelo base
