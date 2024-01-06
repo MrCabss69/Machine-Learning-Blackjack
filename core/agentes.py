@@ -4,11 +4,8 @@ import random
 from juego import codificar_estado, valor_mano
 from collections import defaultdict
 
-class Agente:
-    def get_action(self, estado):
-        pass
-    
-class Crupier(Agente):
+
+class Crupier():
     def __init__(self):
         pass
 
@@ -31,7 +28,7 @@ class DummyAgent():
 
 class NeuralNetworkAgent():
     def __init__(self, input_size):
-        path = '/home/jd/Documentos/CODIGO/Machine-Learning-Blackajack-v2/resources/pretrained/dnn3_5000000.h5'
+        path = '/home/jd/Documentos/CODIGO/Machine-Learning-Blackajack/resources/pretrained/dnn3_5000000.h5'
         self.model = load_model(path)
         self.input_size = input_size
 

@@ -58,10 +58,6 @@ JUEGO
 - juego/estado:    clase para definir un estado del juego
 - juego/jugador:   clase para definir un juegador
 
-
-
-
-
 ## Aspectos Teóricos
 
 ### Simulaciones de Montecarlo
